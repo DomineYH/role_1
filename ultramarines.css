@@ -1,0 +1,137 @@
+/* Ultramarines chapter theme. Screen-only tokens preserve the paper print layout. */
+.chapter-banner, .brand-kicker { display: none; }
+@media screen {
+  :root {
+    color-scheme: dark;
+    --bg-canvas: #080f1b;
+    --bg-card: #101f33;
+    --bg-subtle: #14283f;
+    --bg-hover: #203d5d;
+    --text-main: #f0eee5;
+    --text-muted: #b5c4d6;
+    --text-subtle: #94a8bf;
+    --border-light: #2b4058;
+    --border-strong: #63748a;
+    --primary: #93c4ff;
+    --primary-hover: #badbff;
+    --primary-subtle: #16355b;
+    --success: #93d8ba;
+    --success-bg: #13382f;
+    --success-border: #326554;
+    --warning: #f5ce81;
+    --warning-bg: #3b2f1b;
+    --warning-border: #856a34;
+    --danger: #ffb1b1;
+    --danger-bg: #49252b;
+    --danger-border: #92505d;
+    --radius-sm: 3px;
+    --radius-md: 5px;
+    --radius-lg: 6px;
+    --gold: #d9bc7a;
+    --shadow-sm: 0 8px 24px #0003;
+    --shadow-lg: 0 20px 70px #0009;
+  }
+  body {
+    background-image: radial-gradient(ellipse at 75% 0%, #15396a70, transparent 55%), repeating-linear-gradient(0deg, transparent 0 63px, #abcfff04 64px);
+  }
+  .app-header { background: #0b1728f5; border-top: 3px solid var(--gold); border-bottom-color: #a88a4a66; }
+  .header-inner { padding-block: 1rem; gap: 1rem; }
+  .brand-kicker { display: block; color: var(--gold); font: 600 .65rem Georgia, serif; letter-spacing: .2em; }
+  .brand-title { font-size: 1.2rem; }
+  .brand-subtitle { font-size: .72rem; }
+  .source-zone { background: #0b1627; padding: .6rem; }
+  .source-dot { box-shadow: 0 0 9px #93d8ba66; flex-shrink: 0; }
+  .stat-value strong { color: var(--gold); }
+  .app-main { padding-top: 1.75rem; }
+  .chapter-banner {
+    display: flex; position: relative; isolation: isolate; overflow: hidden;
+    align-items: center; gap: 2.5rem; min-height: 270px; padding: 2.3rem 3rem 4rem;
+    margin-bottom: 1.75rem; border: 1px solid #a58b52; border-radius: 6px;
+    background: linear-gradient(115deg, #10294d, #1b4e8e 58%, #102640);
+    box-shadow: inset 0 0 0 5px #07132255, 0 12px 35px #0004;
+  }
+  .chapter-banner::before {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: repeating-linear-gradient(115deg, transparent 0 90px, #060e2130 90px 92px, transparent 92px 100px), linear-gradient(0deg, #030b1f66, transparent);
+  }
+  .chapter-emblem {
+    width: 145px; flex-shrink: 0; min-height: 174px; display: flex; flex-direction: column; align-items: center;
+    padding: 12px 10px 24px; color: #f5efdc; background: linear-gradient(130deg, #2766ae, #102c55);
+    border: 3px solid var(--gold); border-radius: 8px 8px 48% 48%; box-shadow: 0 0 0 5px #081a3380, 0 8px 20px #0005;
+  }
+  .chapter-emblem > span { font: 16px Georgia, serif; color: var(--gold); }
+  .chapter-emblem b { font: bold 84px/1.1 Georgia, serif; }
+  .chapter-emblem small { font: 9px Georgia, serif; letter-spacing: .2em; }
+  .chapter-eyebrow { font-size: .7rem; color: #e5c98e; letter-spacing: .15em; margin-bottom: .8rem; }
+  .chapter-copy h2 { font-size: clamp(1.6rem, 2.5vw, 2.2rem); line-height: 1.35; letter-spacing: -.04em; font-weight: 800; }
+  .chapter-description { color: #c4d5e9; font-size: .85rem; line-height: 1.7; margin-top: .8rem; }
+  .chapter-seal { margin-left: auto; padding: 1.5rem; border-block: 1px solid #d9bc7a66; color: var(--gold); text-align: center; transform: rotate(-7deg); }
+  .chapter-seal span { display: block; font: .65rem Georgia, serif; letter-spacing: .22em; }
+  .chapter-seal b { display: block; font: 64px/1.4 Georgia, serif; }
+  .chapter-caption { position: absolute; inset: auto 0 0; display: flex; justify-content: space-between; gap: 1rem; padding: .6rem 1.5rem; background: #08172bbc; border-top: 1px solid #d9bc7a44; font-size: .7rem; color: #d4c39e; letter-spacing: .05em; }
+  .panel-card { border-top: 2px solid #a58b52; }
+  .card-header { background: linear-gradient(105deg, #1a3251, #101e32); flex-wrap: wrap; }
+  .card-title { display: flex; align-items: center; gap: .65rem; }
+  .section-number { font: 1.15rem Georgia, serif; color: var(--gold); }
+  .card-desc { margin-top: .45rem; line-height: 1.6; }
+  .card-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .student-list-grid { max-height: 320px; scrollbar-color: #63748a #101f33; }
+  .student-row { min-width: 0; padding: .65rem .5rem; gap: .4rem; }
+  .student-name { overflow-wrap: anywhere; }
+  .role-row { padding: .6rem .5rem; gap: .4rem; }
+  .role-name-input { width: 100%; min-width: 0; background: #0b1727; }
+  .stepper { flex-shrink: 0; }
+  .form-input { background: #0b1727; color: var(--text-main); }
+  .form-input::placeholder { color: #94a8bf; }
+  .alert-info { border-bottom-color: #345780; }
+  .integrity-pill { display: inline-block; }
+  .result-panel { min-height: 530px; }
+  .result-card { background: linear-gradient(145deg, #1b3353, #101f33); border-top: 2px solid #ad9257; }
+  .result-role-title { color: #ead4a3; }
+  .assigned-student-tag { background: #0d1b2d; }
+  .empty-state { padding: 4rem 1rem; }
+  .empty-icon { font-size: 0; }
+  .empty-icon::before { content: 'Ω'; display: inline-grid; place-items: center; width: 88px; height: 100px; font: bold 64px Georgia, serif; color: var(--gold); border: 2px solid #a58b5277; border-radius: 5px 5px 40% 40%; background: #1a3960; margin-bottom: 1rem; }
+  .empty-title { color: #ead4a3; }
+  .btn { min-height: 40px; }
+  .btn-primary { background: linear-gradient(#e4ca91, #c4a15d); color: #111c2c; border-color: #f0dcae; box-shadow: inset 0 1px #fff5, 0 2px 8px #0003; }
+  .btn-primary:hover:not(:disabled) { background: #f0d7a3; }
+  .btn-secondary { border-color: #526986; }
+  .btn-outline { color: #dec99c; border-color: #8c784d; }
+  .bottom-toolbar { background: #0b1728f5; border-top-color: #a58b52; box-shadow: 0 -8px 28px #0005; }
+  .toolbar-status { color: #d9c79f; }
+  .modal-card { border-color: #a58b52; max-height: calc(100dvh - 2rem); overflow-y: auto; }
+  .modal-header { background: linear-gradient(110deg, #1b3d68, #101f33); }
+  .toast-popup { background: #214368; color: #fff; border: 1px solid var(--gold); }
+  :where(button, input, a):focus-visible { outline: 2px solid #f4d795; outline-offset: 3px; }
+  @media (max-width: 1100px) { .header-inner { justify-content: flex-start; } .stats-zone { margin-left: auto; } }
+  @media (max-width: 640px) {
+    .app-header { position: static; }
+    .header-inner, .toolbar-inner { padding: 1rem; }
+    .source-zone { width: 100%; flex-wrap: wrap; justify-content: space-between; }
+    .stats-zone { margin-left: 0; flex-wrap: wrap; gap: .7rem; }
+    .app-main { padding: 1rem 1rem 2rem; }
+    .chapter-banner { padding: 1.5rem 1.2rem 4rem; gap: 1rem; min-height: 255px; }
+    .chapter-emblem { width: 75px; min-height: 108px; padding: 8px 5px 14px; border-width: 2px; }
+    .chapter-emblem b { font-size: 46px; }
+    .chapter-emblem small { font-size: 6px; letter-spacing: .1em; }
+    .chapter-eyebrow { font-size: .55rem; letter-spacing: .04em; }
+    .chapter-copy h2 { font-size: 1.4rem; }
+    .chapter-description { font-size: .75rem; }
+    .chapter-seal { display: none; }
+    .chapter-caption { padding: .6rem .8rem; font-size: .6rem; flex-wrap: wrap; gap: .2rem; }
+    .card-header, .card-body { padding: 1rem; }
+    .student-list-grid { grid-template-columns: 1fr; }
+    .results-grid { grid-template-columns: minmax(0, 1fr); }
+    .bottom-toolbar { position: sticky; margin-top: auto; }
+    .toolbar-inner { gap: .7rem; }
+    .toolbar-actions { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
+    .toolbar-actions .btn { padding-inline: .5rem; }
+    .toolbar-status { font-size: .8rem; }
+    .modal-backdrop { padding: .75rem; }
+    .modal-header, .modal-body, .modal-footer { padding: 1rem; }
+    .modal-footer { flex-wrap: wrap; }
+    .toast-popup { bottom: 160px; left: 1rem; right: 1rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+}
