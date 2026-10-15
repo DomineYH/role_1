@@ -9,12 +9,14 @@
   <meta property="og:description" content="초등학교 학급에서 가상 학생 20명의 역할을 공정하게 자동 배정하고 중복 및 누락을 방지하는 도구">
   <meta property="og:type" content="website">
   <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./ultramarines.css">
 </head>
 <body>
   <!-- 최상단 헤더 바 -->
   <header class="app-header">
     <div class="header-inner">
       <div class="brand-zone">
+        <span class="brand-kicker">ULTRAMARINES · XIII</span>
         <h1 class="brand-title">우리 반 역할분담</h1>
         <p class="brand-subtitle">초등 학급 1인 1역 공정 무작위 배정기</p>
       </div>
@@ -46,6 +48,16 @@
 
   <!-- 메인 작업 영역 -->
   <main class="app-main">
+    <section class="chapter-banner" aria-labelledby="chapterTitle">
+      <div class="chapter-emblem" aria-hidden="true"><span>ⅩⅢ</span><b>Ω</b><small>ULTRAMAR</small></div>
+      <div class="chapter-copy">
+        <p class="chapter-eyebrow">CHAPTER COMMAND / 학급 역할 배정</p>
+        <h2 id="chapterTitle">각자의 역할로,<br>하나의 강한 우리 반.</h2>
+        <p class="chapter-description">함께하는 책임, 공정한 배정.<br>우리 반의 오늘을 이곳에서 준비하세요.</p>
+      </div>
+      <div class="chapter-seal" aria-hidden="true"><span>COURAGE</span><b>ⅩⅢ</b><span>AND HONOUR</span></div>
+      <div class="chapter-caption"><span>울트라마린 챕터</span><span>명부 확인 → 정원 설정 → 역할 배정</span></div>
+    </section>
     <div class="main-layout">
       <!-- 왼쪽 영역: 학생 명부 및 역할 정원 설정 -->
       <section class="left-column">
@@ -53,7 +65,7 @@
         <div class="panel-card">
           <div class="card-header">
             <div>
-              <h2 class="card-title">1. 참여 학생 명부</h2>
+              <h2 class="card-title"><span class="section-number">Ⅰ</span> 참여 학생 명부</h2>
               <p class="card-desc">배정에 참여할 학생을 체크하세요 (결석생 제외)</p>
             </div>
             <div class="card-actions">
@@ -70,11 +82,11 @@
           </div>
         </div>
 
-        <!-- 2. 역할 및 정원 설정 카드 -->
+        <!-- <span class="section-number">Ⅱ</span> 역할 및 정원 설정 카드 -->
         <div class="panel-card">
           <div class="card-header">
             <div>
-              <h2 class="card-title">2. 역할 및 정원 설정</h2>
+              <h2 class="card-title"><span class="section-number">Ⅱ</span> 역할 및 정원 설정</h2>
               <p class="card-desc">
                 정원 합계: <strong id="roleSummaryQuota">20</strong>명 
                 · 참여 학생: <strong id="roleTargetStudentCount">20</strong>명
@@ -99,7 +111,7 @@
         <div class="panel-card result-panel">
           <div class="card-header">
             <div>
-              <h2 class="card-title">3. 역할별 배정 결과</h2>
+              <h2 class="card-title"><span class="section-number">Ⅲ</span> 역할별 배정 결과</h2>
               <p class="card-desc">무작위 셔플을 통해 편향 없이 공정하게 배정됩니다</p>
             </div>
             <div id="integrityContainer" class="integrity-container">
