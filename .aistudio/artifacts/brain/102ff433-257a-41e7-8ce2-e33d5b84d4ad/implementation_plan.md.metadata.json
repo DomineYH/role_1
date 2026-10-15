@@ -1,0 +1,6 @@
+{
+  "summary": "초등학교 학급 역할 분담 웹 애플리케이션 '우리 반 역할분담' 구현 계획서. 순수 HTML/CSS/JS 기반의 GitHub Pages 호스팅용 구조, 구글 스프레드시트/Apps Script(Code.gs) 연동 설계, 정원 및 중복/누락 검증 알고리즘, 인쇄 및 CSV 내보내기, 단계별 테스트 시나리오를 포함합니다.",
+  "updatedAt": "2026-10-15T11:16:37.725394397Z",
+  "requestFeedback": true,
+  "userFacing": true
+}

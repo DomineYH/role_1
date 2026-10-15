@@ -1,0 +1,6 @@
+{
+  "name": "우리 반 역할분담",
+  "description": "초등학교 학급에서 가상 학생 20명의 역할을 공정하게 자동 배정하고 중복 및 누락을 방지하는 도구",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

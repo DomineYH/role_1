@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>우리 반 역할분담 - 초등 학급 1인 1역 배정기</title>
+  <meta name="description" content="초등학교 학급에서 가상 학생 20명의 역할을 공정하게 자동 배정하고 중복 및 누락을 방지하는 도구">
+  <meta property="og:title" content="우리 반 역할분담">
+  <meta property="og:description" content="초등학교 학급에서 가상 학생 20명의 역할을 공정하게 자동 배정하고 중복 및 누락을 방지하는 도구">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <!-- 최상단 헤더 바 -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand-zone">
+        <h1 class="brand-title">우리 반 역할분담</h1>
+        <p class="brand-subtitle">초등 학급 1인 1역 공정 무작위 배정기</p>
+      </div>
+
+      <div class="source-zone">
+        <div class="source-info">
+          <span class="source-dot"></span>
+          <span id="sourceLabel" class="source-text">자료 출처: 기본 가상 데이터 (20명)</span>
+        </div>
+        <button type="button" id="openModalBtn" class="btn btn-secondary btn-sm">시트 연동 설정</button>
+      </div>
+
+      <div class="stats-zone">
+        <div class="stat-item">
+          <span class="stat-label">참여 학생</span>
+          <span class="stat-value"><strong id="headerActiveCount">20</strong>명</span>
+        </div>
+        <span class="stat-divider">/</span>
+        <div class="stat-item">
+          <span class="stat-label">역할 정원</span>
+          <span class="stat-value"><strong id="headerTotalQuota">20</strong>명</span>
+        </div>
+        <div class="stat-badge-wrapper">
+          <span id="headerStatusBadge" class="status-badge status-ready">배정 가능</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 메인 작업 영역 -->
+  <main class="app-main">
+    <div class="main-layout">
+      <!-- 왼쪽 영역: 학생 명부 및 역할 정원 설정 -->
+      <section class="left-column">
+        <!-- 1. 참여 학생 관리 카드 -->
+        <div class="panel-card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">1. 참여 학생 명부</h2>
+              <p class="card-desc">배정에 참여할 학생을 체크하세요 (결석생 제외)</p>
+            </div>
+            <div class="card-actions">
+              <label class="checkbox-label" for="selectAllCheckbox">
+                <input type="checkbox" id="selectAllCheckbox" checked>
+                <span>전체 선택</span>
+              </label>
+            </div>
+          </div>
+          <div class="card-body">
+            <div id="studentListContainer" class="student-list-grid">
+              <!-- app.js에서 20명 학생 동적 렌더링 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. 역할 및 정원 설정 카드 -->
+        <div class="panel-card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">2. 역할 및 정원 설정</h2>
+              <p class="card-desc">각 역할의 정원을 조절하세요 (합계: <strong id="roleSummaryQuota">20</strong>명)</p>
+            </div>
+            <div class="card-actions">
+              <button type="button" id="addRoleBtn" class="btn btn-outline btn-sm">+ 역할 추가</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div id="roleListContainer" class="role-list">
+              <!-- app.js에서 역할 리스트 동적 렌더링 -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 오른쪽 영역: 역할 배정 결과 -->
+      <section class="right-column">
+        <div class="panel-card result-panel">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">3. 역할별 배정 결과</h2>
+              <p class="card-desc">무작위 셔플을 통해 편향 없이 공정하게 배정됩니다</p>
+            </div>
+            <div id="integrityContainer" class="integrity-container">
+              <span id="integrityBadge" class="integrity-pill">배정 대기 중</span>
+            </div>
+          </div>
+
+          <!-- 상태 알림 바 (불일치 시 상세 안내) -->
+          <div id="validationNotice" class="alert-banner alert-info">
+            참여 인원(20명)과 역할 정원 합계(20명)가 일치하여 배정 준비가 완료되었습니다.
+          </div>
+
+          <div class="card-body">
+            <div id="resultsContainer" class="results-grid">
+              <!-- 배정 전 초기 안내 또는 배정된 역할 카드 그리드 -->
+              <div class="empty-state">
+                <div class="empty-icon">🎲</div>
+                <h3 class="empty-title">아직 배정되지 않았습니다</h3>
+                <p class="empty-desc">
+                  하단의 <strong>[역할 자동 배정]</strong> 버튼을 클릭하면<br>
+                  참여 인원 20명을 대상으로 중복과 누락 없이 무작위 배정합니다.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- 하단 고정 툴바 -->
+  <footer class="bottom-toolbar">
+    <div class="toolbar-inner">
+      <div class="toolbar-status">
+        <span id="toolbarStatusText">참여 20명 = 정원 20명 (배정 가능)</span>
+      </div>
+      <div class="toolbar-actions">
+        <button type="button" id="assignBtn" class="btn btn-primary">
+          <span>🎲</span> 역할 자동 배정
+        </button>
+        <button type="button" id="confirmBtn" class="btn btn-secondary" disabled>
+          <span>✓</span> 결과 확정
+        </button>
+        <button type="button" id="exportCsvBtn" class="btn btn-outline" disabled>
+          <span>📥</span> CSV 저장
+        </button>
+        <button type="button" id="printBtn" class="btn btn-outline" disabled>
+          <span>🖨️</span> 인쇄하기
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 스프레드시트 연동 모달 -->
+  <div id="sheetModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="modalTitle" class="modal-title">구글 스프레드시트 연동</h2>
+        <button type="button" id="closeModalBtn" class="btn-icon" aria-label="닫기">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">
+          구글 스프레드시트의 <code>학생</code> 탭에 등록된 가상 학생 데이터를 가져옵니다.
+        </p>
+
+        <div class="form-group">
+          <label for="webAppUrlInput" class="form-label">Google Apps Script 웹 앱 URL</label>
+          <input
+            type="url"
+            id="webAppUrlInput"
+            class="form-input"
+            placeholder="https://script.google.com/macros/s/.../exec"
+          >
+          <span class="form-hint">배포 시 '액세스 권한: 모든 사용자'로 설정된 URL을 입력하세요.</span>
+        </div>
+
+        <div class="security-notice">
+          <strong>🔒 안전한 개인정보 보호 원칙</strong>
+          <p>
+            시트에 <code>학생ID | 이름 | 성명 | 성별</code> 열이 있어도,
+            웹 앱 스크립트는 <strong>성명과 성별을 응답에서 원천 제외</strong>하고
+            오직 <code>학생ID</code>와 <code>이름(표시명)</code>만 가져옵니다.
+          </p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="resetToDefaultBtn" class="btn btn-outline">기본 데이터로 복원</button>
+        <div class="modal-footer-right">
+          <button type="button" id="cancelModalBtn" class="btn btn-secondary">취소</button>
+          <button type="button" id="fetchSheetBtn" class="btn btn-primary">데이터 불러오기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 토스트 알림 메시지 -->
+  <div id="toastMessage" class="toast-popup hidden" role="status" aria-live="polite"></div>
+
+  <!-- 인쇄 전용 헤더 (화면에서는 숨김, 인쇄 시 출력) -->
+  <div class="print-only print-header">
+    <h1 class="print-title">우리 반 역할분담표</h1>
+    <p id="printDate" class="print-meta">배정 일자: 2026년 10월 15일</p>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
