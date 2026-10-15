@@ -59,6 +59,9 @@
     studentListContainer: document.getElementById('studentListContainer'),
     roleListContainer: document.getElementById('roleListContainer'),
     roleSummaryQuota: document.getElementById('roleSummaryQuota'),
+    roleTargetStudentCount: document.getElementById('roleTargetStudentCount'),
+    roleMatchBadge: document.getElementById('roleMatchBadge'),
+    autoDistributeBtn: document.getElementById('autoDistributeBtn'),
     addRoleBtn: document.getElementById('addRoleBtn'),
     integrityBadge: document.getElementById('integrityBadge'),
     validationNotice: document.getElementById('validationNotice'),
@@ -127,10 +130,13 @@
     const totalQuota = getTotalQuota();
     const diff = activeCount - totalQuota;
 
-    // 헤더 카운트 갱신
+    // 헤더 및 역할 설정 카운트 갱신
     el.headerActiveCount.textContent = String(activeCount);
     el.headerTotalQuota.textContent = String(totalQuota);
     el.roleSummaryQuota.textContent = String(totalQuota);
+    if (el.roleTargetStudentCount) {
+      el.roleTargetStudentCount.textContent = String(activeCount);
+    }
 
     // 전체 선택 체크박스 상태 동기화
     const allChecked = state.students.length > 0 && activeCount === state.students.length;
@@ -138,18 +144,35 @@
     el.selectAllCheckbox.checked = allChecked;
     el.selectAllCheckbox.indeterminate = !allChecked && !noneChecked;
 
+    // 2. 역할 및 정원 설정 카드 내 정원 일치 상태 배지 동기화
+    if (el.roleMatchBadge) {
+      if (activeCount === 0) {
+        el.roleMatchBadge.textContent = '참여 학생 0명';
+        el.roleMatchBadge.className = 'match-badge match-warn';
+      } else if (diff === 0) {
+        el.roleMatchBadge.textContent = '정원 일치 (배정 가능)';
+        el.roleMatchBadge.className = 'match-badge match-ok';
+      } else if (diff < 0) {
+        el.roleMatchBadge.textContent = `${Math.abs(diff)}명 부족`;
+        el.roleMatchBadge.className = 'match-badge match-warn';
+      } else {
+        el.roleMatchBadge.textContent = `${diff}명 초과`;
+        el.roleMatchBadge.className = 'match-badge match-warn';
+      }
+    }
+
     // 불일치 또는 0명 처리
     if (activeCount === 0) {
       el.headerStatusBadge.textContent = '참여 학생 0명';
       el.headerStatusBadge.className = 'status-badge status-warn';
-      el.validationNotice.textContent = '참여하는 학생이 없습니다. 학생을 선택해 주세요.';
+      el.validationNotice.textContent = '참여하는 학생이 0명입니다. 1. 참여 학생 명부에서 학생을 선택해 주세요.';
       el.validationNotice.className = 'alert-banner alert-warn';
       el.toolbarStatusText.textContent = '참여 학생 0명 (배정 불가)';
       el.assignBtn.disabled = true;
     } else if (diff === 0) {
       el.headerStatusBadge.textContent = '배정 가능';
       el.headerStatusBadge.className = 'status-badge status-ready';
-      el.validationNotice.textContent = `참여 인원(${activeCount}명)과 역할 정원 합계(${totalQuota}명)가 일치하여 배정 준비가 완료되었습니다.`;
+      el.validationNotice.textContent = `참여 인원(${activeCount}명)과 역할 정원 합계(${totalQuota}명)가 정확히 일치하여 배정 준비가 완료되었습니다.`;
       el.validationNotice.className = 'alert-banner alert-info';
       el.toolbarStatusText.textContent = `참여 ${activeCount}명 = 정원 ${totalQuota}명 (배정 가능)`;
       el.assignBtn.disabled = false;
@@ -157,14 +180,14 @@
       const shortage = Math.abs(diff);
       el.headerStatusBadge.textContent = `${shortage}명 부족`;
       el.headerStatusBadge.className = 'status-badge status-warn';
-      el.validationNotice.textContent = `참여 인원(${activeCount}명)이 역할 정원(${totalQuota}명)보다 ${shortage}명 부족합니다. 참여 학생을 더 선택하거나 역할 정원을 줄여주세요.`;
+      el.validationNotice.textContent = `참여 인원(${activeCount}명)이 역할 정원(${totalQuota}명)보다 ${shortage}명 부족합니다. [⚡ 참여 인원에 맞춤] 버튼을 누르거나 각 역할 정원을 직접 조절해 주세요.`;
       el.validationNotice.className = 'alert-banner alert-warn';
       el.toolbarStatusText.textContent = `참여 ${activeCount}명 ≠ 정원 ${totalQuota}명 (${shortage}명 부족)`;
       el.assignBtn.disabled = true;
     } else {
       el.headerStatusBadge.textContent = `${diff}명 초과`;
       el.headerStatusBadge.className = 'status-badge status-warn';
-      el.validationNotice.textContent = `참여 인원(${activeCount}명)이 역할 정원(${totalQuota}명)보다 ${diff}명 많습니다. 역할 정원을 늘리거나 참여 학생을 조정해주세요.`;
+      el.validationNotice.textContent = `참여 인원(${activeCount}명)이 역할 정원(${totalQuota}명)보다 ${diff}명 많습니다. [⚡ 참여 인원에 맞춤] 버튼을 누르거나 각 역할 정원을 직접 조절해 주세요.`;
       el.validationNotice.className = 'alert-banner alert-warn';
       el.toolbarStatusText.textContent = `참여 ${activeCount}명 ≠ 정원 ${totalQuota}명 (${diff}명 초과)`;
       el.assignBtn.disabled = true;
@@ -243,7 +266,7 @@
         }
       });
 
-      // 정원 조절 스태퍼
+      // 정원 조절 스태퍼 (숫자 직접 입력 및 +/- 버튼)
       const stepper = document.createElement('div');
       stepper.className = 'stepper';
 
@@ -251,20 +274,42 @@
       minusBtn.type = 'button';
       minusBtn.className = 'stepper-btn';
       minusBtn.textContent = '-';
-      minusBtn.disabled = role.quota <= 1;
+      minusBtn.disabled = role.quota <= 0;
       minusBtn.setAttribute('aria-label', `${role.name} 정원 1명 감소`);
-      minusBtn.addEventListener('click', () => {
-        if (role.quota > 1) {
-          role.quota -= 1;
-          quotaSpan.textContent = String(role.quota);
-          minusBtn.disabled = role.quota <= 1;
+
+      const quotaInput = document.createElement('input');
+      quotaInput.type = 'number';
+      quotaInput.className = 'quota-input';
+      quotaInput.min = '0';
+      quotaInput.max = '99';
+      quotaInput.value = String(role.quota);
+      quotaInput.setAttribute('aria-label', `${role.name} 정원 숫자 직접 입력`);
+
+      // 숫자 직접 타이핑 이벤트
+      quotaInput.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value, 10);
+        role.quota = isNaN(val) || val < 0 ? 0 : val;
+        minusBtn.disabled = role.quota <= 0;
+        validateAndSyncUI();
+      });
+
+      quotaInput.addEventListener('blur', (e) => {
+        if (e.target.value === '' || isNaN(parseInt(e.target.value, 10))) {
+          role.quota = 0;
+          e.target.value = '0';
+          minusBtn.disabled = true;
           validateAndSyncUI();
         }
       });
 
-      const quotaSpan = document.createElement('span');
-      quotaSpan.className = 'quota-val';
-      quotaSpan.textContent = String(role.quota);
+      minusBtn.addEventListener('click', () => {
+        if (role.quota > 0) {
+          role.quota -= 1;
+          quotaInput.value = String(role.quota);
+          minusBtn.disabled = role.quota <= 0;
+          validateAndSyncUI();
+        }
+      });
 
       const plusBtn = document.createElement('button');
       plusBtn.type = 'button';
@@ -273,13 +318,13 @@
       plusBtn.setAttribute('aria-label', `${role.name} 정원 1명 증가`);
       plusBtn.addEventListener('click', () => {
         role.quota += 1;
-        quotaSpan.textContent = String(role.quota);
-        minusBtn.disabled = false;
+        quotaInput.value = String(role.quota);
+        minusBtn.disabled = role.quota <= 0;
         validateAndSyncUI();
       });
 
       stepper.appendChild(minusBtn);
-      stepper.appendChild(quotaSpan);
+      stepper.appendChild(quotaInput);
       stepper.appendChild(plusBtn);
 
       // 삭제 버튼 (최소 1개 역할 유지)
@@ -646,6 +691,35 @@
     el.sheetModal.classList.add('hidden');
   };
 
+  /**
+   * 1. 참여 학생 명부의 학생 수를 기준으로 각 역할의 정원을 자동 배분
+   */
+  const autoDistributeQuota = () => {
+    const activeCount = getActiveStudents().length;
+    if (activeCount === 0) {
+      alert('참여하는 학생이 0명입니다. 먼저 1. 참여 학생 명부에서 학생을 선택해 주세요.');
+      return;
+    }
+
+    const roleCount = state.roles.length;
+    if (roleCount === 0) {
+      alert('역할이 최소 1개 이상 등록되어 있어야 합니다.');
+      return;
+    }
+
+    const baseQuota = Math.floor(activeCount / roleCount);
+    const remainder = activeCount % roleCount;
+
+    state.roles.forEach((role, idx) => {
+      // 앞쪽 remainder개의 역할에는 1명 더 배정하여 합계를 정확히 일치시킴
+      role.quota = baseQuota + (idx < remainder ? 1 : 0);
+    });
+
+    renderRoleList();
+    validateAndSyncUI();
+    showToast(`참여 학생 ${activeCount}명에 맞춰 ${roleCount}개 역할 정원을 자동 배분했습니다.`);
+  };
+
   // =========================================================================
   // 9. 이벤트 리스너 바인딩 및 앱 초기화
   // =========================================================================
@@ -672,6 +746,11 @@
       renderRoleList();
       validateAndSyncUI();
     });
+
+    // 참여 인원 기준 정원 자동 배분 버튼
+    if (el.autoDistributeBtn) {
+      el.autoDistributeBtn.addEventListener('click', autoDistributeQuota);
+    }
 
     // 툴바 액션 버튼들
     el.assignBtn.addEventListener('click', assignRoles);

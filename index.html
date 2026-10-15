@@ -75,9 +75,14 @@
           <div class="card-header">
             <div>
               <h2 class="card-title">2. 역할 및 정원 설정</h2>
-              <p class="card-desc">각 역할의 정원을 조절하세요 (합계: <strong id="roleSummaryQuota">20</strong>명)</p>
+              <p class="card-desc">
+                정원 합계: <strong id="roleSummaryQuota">20</strong>명 
+                · 참여 학생: <strong id="roleTargetStudentCount">20</strong>명
+                <span id="roleMatchBadge" class="match-badge match-ok">일치</span>
+              </p>
             </div>
             <div class="card-actions">
+              <button type="button" id="autoDistributeBtn" class="btn btn-secondary btn-sm" title="현재 참여 학생 수에 맞게 각 역할의 정원을 자동 배분합니다">⚡ 참여 인원에 맞춤</button>
               <button type="button" id="addRoleBtn" class="btn btn-outline btn-sm">+ 역할 추가</button>
             </div>
           </div>

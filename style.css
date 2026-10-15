@@ -396,12 +396,60 @@ body {
   cursor: not-allowed;
 }
 
-.quota-val {
-  min-width: 32px;
+.quota-input {
+  width: 44px;
+  height: 32px;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--text-main);
+  border: 1px solid transparent;
+  background-color: transparent;
+  outline: none;
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  -moz-appearance: textfield;
+  border-radius: 4px;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.quota-input::-webkit-outer-spin-button,
+.quota-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.quota-input:hover {
+  background-color: var(--bg-hover);
+}
+
+.quota-input:focus {
+  background-color: var(--bg-card);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.match-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border-radius: 4px;
+  margin-left: 0.35rem;
+  vertical-align: middle;
+}
+
+.match-ok {
+  background-color: var(--success-bg);
+  color: var(--success);
+  border: 1px solid var(--success-border);
+}
+
+.match-warn {
+  background-color: var(--warning-bg);
+  color: var(--warning);
+  border: 1px solid var(--warning-border);
 }
 
 .btn-delete-role {
